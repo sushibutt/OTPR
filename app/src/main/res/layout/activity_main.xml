@@ -25,8 +25,16 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter Token"
-        android:background="@drawable/text_box"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="146dp"
+        android:layout_marginTop="372dp"
+        android:layout_marginEnd="151dp"
+        android:layout_marginBottom="295dp"
+        android:background="@drawable/text_box"
+        android:hint="Enter Token" />
 
 
 </RelativeLayout>
