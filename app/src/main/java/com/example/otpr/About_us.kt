@@ -26,8 +26,10 @@ class About_us : AppCompatActivity() {
 
         // Set properties or listeners for the custom view
         back.setOnClickListener {
+            back.alpha = 0.5f
             val intent = Intent(this, Dashboard::class.java)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
         actionBar?.customView = v

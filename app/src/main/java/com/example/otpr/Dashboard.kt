@@ -30,6 +30,7 @@ class Dashboard : AppCompatActivity() {
         about.setOnClickListener {
             val intent = Intent(this, About_us::class.java)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
         }
 
         actionBar?.customView = v
