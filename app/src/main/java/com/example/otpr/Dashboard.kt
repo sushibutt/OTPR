@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ImageView
+import androidx.appcompat.app.ActionBar
 
 
 class Dashboard : AppCompatActivity() {
@@ -16,10 +17,7 @@ class Dashboard : AppCompatActivity() {
         //Remember that user is logged in
         SharedPreferencesManager(this).setLoggedIn(true)
 
-
         val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(false)
-        actionBar?.setDisplayShowTitleEnabled(false)
         actionBar?.setDisplayShowCustomEnabled(true)
 
         val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
