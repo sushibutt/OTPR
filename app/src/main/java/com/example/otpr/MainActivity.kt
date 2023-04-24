@@ -16,12 +16,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //Check if user is logged in
-        if (SharedPreferencesManager(this).isLoggedIn()) {
+        /*if (SharedPreferencesManager(this).isLoggedIn()) {
             val intent = Intent(this, Dashboard::class.java)
             startActivity(intent)
             finish()
         }
-
+        */
         val input = findViewById<EditText>(R.id.editToken)
         val button = findViewById<Button>(R.id.buttonEnter)
 
