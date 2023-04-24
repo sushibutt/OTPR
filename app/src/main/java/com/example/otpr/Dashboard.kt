@@ -28,6 +28,7 @@ class Dashboard : AppCompatActivity() {
         val about = v.findViewById<ImageView>(R.id.about_icon)
 
         about.setOnClickListener {
+            about.alpha = 0.5f
             val intent = Intent(this, About_us::class.java)
             startActivity(intent)
             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
