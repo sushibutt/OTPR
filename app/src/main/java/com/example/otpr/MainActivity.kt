@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener {
 
-            val token = input.text.toString()
+            val token = input.text.toString().trim()
 
             if (token.isEmpty()) {
                 input.error = "Token is Required"
@@ -60,4 +60,3 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-}
