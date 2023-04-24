@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/baseline_arrow_left_24" />
+            android:src="@drawable/back_button" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,7 +24,8 @@
             android:layout_toEndOf="@id/back_icon"
             android:text="About"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </RelativeLayout>

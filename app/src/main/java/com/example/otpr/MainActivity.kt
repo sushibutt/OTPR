@@ -1,6 +1,5 @@
 package com.example.otpr
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -40,7 +39,6 @@ class MainActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<LogResponse>, response: Response<LogResponse>) {
 
                         if (response.body()?.success!!) {
-
                             val intent = Intent(applicationContext, Dashboard::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
