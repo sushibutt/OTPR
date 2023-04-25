@@ -15,9 +15,19 @@ class splashscreen : AppCompatActivity() {
 
         splash_logo.alpha = 0f
         splash_logo.animate().setDuration(1500).alpha(1f).withEndAction {
-            val i = Intent(this, Dashboard::class.java)
-            startActivity(i)
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            val sharedPreferencesManager = SharedPreferencesManager(this)
+            // Check if user is already logged in
+            if (sharedPreferencesManager.isLoggedIn()) {
+                val intent = Intent(this, Dashboard::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                // User is not logged in, show login screen
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }
     }

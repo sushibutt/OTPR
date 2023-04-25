@@ -6,12 +6,12 @@ import android.content.SharedPreferences
 class SharedPreferencesManager(val context: Context) {
 
     companion object {
-        private const val name = "MyAppPref"
+        private const val token = " "
         private const val state = "isLoggedIn"
     }
 
     private val sharedPreferences: SharedPreferences by lazy {
-        context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        context.getSharedPreferences(token, Context.MODE_PRIVATE)
     }
 
     fun isLoggedIn(): Boolean {

@@ -34,6 +34,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/text_box"
         android:hint="Enter Token"
+        android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,15 +46,15 @@
         android:id="@+id/buttonEnter"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_bg"
         android:text="Enter"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editToken"
-        app:layout_constraintVertical_bias="0.089"
-        android:background="@drawable/button_bg"
-        android:textColor="#FFFFFF"/>
+        app:layout_constraintVertical_bias="0.089" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

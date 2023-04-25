@@ -14,9 +14,6 @@ class Dashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        //Remember that user is logged in
-        SharedPreferencesManager(this).setLoggedIn(true)
-
         val actionBar = supportActionBar
         actionBar?.setDisplayShowCustomEnabled(true)
 
