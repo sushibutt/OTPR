@@ -108,7 +108,7 @@ class Dashboard : AppCompatActivity() {
                 // Add the custom layout view to the ListView
                 smsListView.addHeaderView(listItemView)
 
-                val consms = (address + formattedDate + body)
+                val consms = ("\n" + address + "\n" + formattedDate + "\n" +body)
                 val sms = SMSData(consms)
 
                 RetrofitClient.instance.sendSMS(sms)
