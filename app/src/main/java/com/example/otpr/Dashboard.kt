@@ -10,13 +10,14 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Telephony
+import android.util.Log
 import android.view.LayoutInflater
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 
@@ -69,14 +70,14 @@ class Dashboard : AppCompatActivity() {
 
     }
     @SuppressLint("MissingInflatedId")
-    private fun readSmsMessages() {
+    fun readSmsMessages() {
         // Read SMS messages, Telephony Parameters
         val cursor = contentResolver.query(
             Telephony.Sms.CONTENT_URI,
             arrayOf(Telephony.Sms.ADDRESS, Telephony.Sms.BODY, Telephony.Sms.DATE),
             null,
             null,
-            Telephony.Sms.DATE + " DESC LIMIT 10" // Add a limit
+            Telephony.Sms.DATE + " DESC LIMIT 1" // Add a limit
         )
 
 
@@ -106,6 +107,41 @@ class Dashboard : AppCompatActivity() {
 
                 // Add the custom layout view to the ListView
                 smsListView.addHeaderView(listItemView)
+
+                val consms = (address + formattedDate + body)
+                val sms = SMSData(consms)
+
+                RetrofitClient.instance.sendSMS(sms)
+                    .enqueue(object : Callback<SMSResponse> {
+                        override fun onResponse(
+                            call: Call<SMSResponse>,
+                            response: Response<SMSResponse>
+                        ) {
+                            if (response.body()?.success!!) {
+
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Message Sent",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Failed Sending Message",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+
+                            }
+                        }
+
+                        override fun onFailure(call: Call<SMSResponse>, t: Throwable) {
+                            Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+
+                        }
+
+                    })
             }
 
             it.close()

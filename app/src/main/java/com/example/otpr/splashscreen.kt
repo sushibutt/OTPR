@@ -11,6 +11,12 @@ class splashscreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splashscreen)
 
+        if (SharedPreferencesManager(this).isLoggedIn()) {
+            val intent = Intent(this, Dashboard::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val splash_logo = findViewById<ImageView>(R.id.splash_logo)
 
         splash_logo.alpha = 0f

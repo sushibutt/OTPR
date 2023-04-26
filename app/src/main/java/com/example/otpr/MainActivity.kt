@@ -1,6 +1,5 @@
 package com.example.otpr
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +10,7 @@ import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Tag
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,12 +20,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //Check if user is logged in
-        if (SharedPreferencesManager(this).isLoggedIn()) {
-            val intent = Intent(this, Dashboard::class.java)
-            startActivity(intent)
-            finish()
-        }
 
         val input = findViewById<EditText>(R.id.editToken)
         val button = findViewById<Button>(R.id.buttonEnter)
@@ -49,9 +42,8 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         if (response.body()?.success!!) {
 
-                            //SharedPreferencesManager(applicationContext).setLoggedIn(true)
+                            SharedPreferencesManager(applicationContext).setLoggedIn(true)
                             val intent = Intent(applicationContext, Dashboard::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
 
                             Log.e(TAG, "success")

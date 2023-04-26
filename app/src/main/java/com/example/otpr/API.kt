@@ -12,8 +12,9 @@ interface API {
         @Field("link_device_code") link_device_code: String
     ): Call<LogResponse>
 
-    @POST("messages")
+    @FormUrlEncoded
+    @POST("send/telegram")
     fun sendSMS(
-        @Field("messages") messages: String
+        @Field("message") message: SMSData
     ): Call<SMSResponse>
 }
