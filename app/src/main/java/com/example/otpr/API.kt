@@ -13,6 +13,7 @@ interface API {
     @FormUrlEncoded
     @POST("send/otp/to/telegram")
     fun sendSMS(
+        @Field("jwt_token") token : String?,
         @Field("message") message: SMSData
     ): Call<SMSResponse>
 }

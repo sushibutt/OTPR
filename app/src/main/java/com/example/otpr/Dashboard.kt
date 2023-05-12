@@ -39,6 +39,7 @@ class Dashboard : AppCompatActivity() {
 
         val about = v.findViewById<ImageView>(R.id.about_icon)
 
+
         // Check for internet connectivity
         fun isNetworkAvailable(): Boolean {
             val connectivityManager =
@@ -98,7 +99,7 @@ class Dashboard : AppCompatActivity() {
         //Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
             readSmsMessages()
-            swipeRefreshLayout.isRefreshing = true
+            swipeRefreshLayout.isRefreshing = false
         }
 
         // Check for READ_SMS permission
@@ -125,7 +126,6 @@ class Dashboard : AppCompatActivity() {
         val smsListView = findViewById<ListView>(R.id.sms_list_view)
 
         cursor?.let {
-            smsList.clear()
             while (it.moveToNext()) {
                 val address = it.getString(it.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
                 val body = it.getString(it.getColumnIndexOrThrow(Telephony.Sms.BODY))
@@ -148,17 +148,22 @@ class Dashboard : AppCompatActivity() {
                 // Add the custom layout view to the ListView
                 smsListView.addHeaderView(listItemView)
 
-                //val jwt = jwt_token("eyJhbGciOiJIUzI1NiJ9.MQ.jec-GZch-9OyAhze_VRuKnVlSqH2YIj6FB2UXfSCYxc")
+                val jwtToken = SharedPreferencesManager(applicationContext).getToken()
                 val consms = ("\n" + address + "\n" + formattedDate + "\n" + body)
                 val sms = SMSData(consms)
 
-                //val sharedPreferences = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
-
-                RetrofitClient.instance.sendSMS(sms).enqueue(object : Callback<SMSResponse> {
+                RetrofitClient.instance.sendSMS(jwtToken, sms).enqueue(object : Callback<SMSResponse> {
                     override fun onResponse(
                         call: Call<SMSResponse>, response: Response<SMSResponse>
                     ) {
                         if (response.body()?.success!!) {
+
+                            //Flag message if sent
+                            val sharedPreferences = applicationContext.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putBoolean("isMessageSent", true)
+                            editor.apply()
+
                             Toast.makeText(
                                 applicationContext, "Message Sent", Toast.LENGTH_LONG
                             ).show()

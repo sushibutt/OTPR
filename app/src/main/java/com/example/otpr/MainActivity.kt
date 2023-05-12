@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -21,9 +22,10 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    companion object{
+    companion object {
         const val TAG = "MainActivity"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,9 +33,11 @@ class MainActivity : AppCompatActivity() {
 
         // Check for internet connectivity
         fun isNetworkAvailable(): Boolean {
-            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val network = connectivityManager.activeNetwork ?: return false
-            val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(network) ?: return false
             return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         }
 
@@ -46,7 +50,8 @@ class MainActivity : AppCompatActivity() {
                 val textViewPopupTitle = popupView.findViewById<TextView>(R.id.textViewPopupTitle)
                 textViewPopupTitle.text = "No Internet Connection"
 
-                val textViewPopupMessage = popupView.findViewById<TextView>(R.id.textViewPopupMessage)
+                val textViewPopupMessage =
+                    popupView.findViewById<TextView>(R.id.textViewPopupMessage)
                 textViewPopupMessage.text = "There was a problem connecting to the server."
 
                 val buttonPopupOk = popupView.findViewById<Button>(R.id.buttonPopupOk)
@@ -83,30 +88,34 @@ class MainActivity : AppCompatActivity() {
                         call: Call<LogResponse>,
                         response: Response<LogResponse>
                     ) {
-                        if (response.body()?.success!!) {
+                        if (response.isSuccessful && response.body()?.success == true) {
+                            // Save JWT token to SharedPreferences
+                            val token = response.body()?.token
+                            SharedPreferencesManager(applicationContext).setToken(token)
 
+                            // Set logged in status to true
                             SharedPreferencesManager(applicationContext).setLoggedIn(true)
+                            // Start the Dashboard activity
                             val intent = Intent(applicationContext, Dashboard::class.java)
                             startActivity(intent)
 
-                            Log.e(TAG, "success")
-
+                            Log.d(TAG, "Login successful")
                         } else {
                             Toast.makeText(
                                 applicationContext,
-                                "Error Logging in",
+                                "Error logging in",
                                 Toast.LENGTH_LONG
                             ).show()
-
-                            Log.e(TAG, "Fail")
+                            Log.e(TAG, "Login failed")
                         }
                     }
 
                     override fun onFailure(call: Call<LogResponse>, t: Throwable) {
-                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-
-                        Log.e(TAG, "Fail")
+                        Toast.makeText(applicationContext, "Error logging in", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e(TAG, "Login failed")
                     }
+
 
                 })
         }
