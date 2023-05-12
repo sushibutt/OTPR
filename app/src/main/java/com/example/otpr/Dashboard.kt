@@ -62,8 +62,7 @@ class Dashboard : AppCompatActivity() {
 
                 val textViewPopupMessage =
                     popupView.findViewById<TextView>(R.id.textViewPopupMessage)
-                textViewPopupMessage.text = "There was a problem connecting to the\n" +
-                        "        server."
+                textViewPopupMessage.text = "There was a problem connecting to the server."
 
                 val buttonPopupOk = popupView.findViewById<Button>(R.id.buttonPopupOk)
                 buttonPopupOk.setOnClickListener {
